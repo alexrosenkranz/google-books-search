@@ -15,8 +15,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
+import 'typeface-roboto';
 
-const drawerWidth = 240;
+const drawerWidth = 350;
 
 const styles = theme => ({
   root: {
@@ -66,22 +67,51 @@ class App extends Component {
   state = {
     mobileOpen: false,
     bookQuery: "",
-    booksList: []
+    bookList: [],
+    activePageHeader: "Search For Books",
+    activePage: "Search"
   };
+
+  componentDidMount() {
+    this.searchGoogleBooks("Star Wars");
+  }
+
+  searchGoogleBooks = (query) => {
+    API.searchGoogleBooks(query)
+      .then(({ data }) => {
+        console.log(data.items);
+        const bookList = data.items.map(book => {
+          return {
+            bookId: book.id,
+            title: book.volumeInfo.title,
+            authors: book.volumeInfo.authors,
+            description: book.volumeInfo.description,
+            link: book.volumeInfo.infoLink,
+            image: book.volumeInfo.imageLinks.thumbnail
+          }
+        })
+        this.setState({ bookList })
+      })
+      .catch(err => console.log(err));
+  }
+
+  handlePageChange = (pageTitle) => {
+    const activePageHeader = (pageTitle === "Search" ? "Search For Books" : "View Saved Books");
+    this.setState({activePageHeader, activePage: pageTitle})
+  }
 
   handleDrawerToggle = () => {
     this.setState(state => ({
       mobileOpen: !state.mobileOpen
     }));
   };
+  
 
   handleFormSubmit = (event) => {
     event.preventDefault();
 
     if (this.state.bookQuery) {
-      API.searchGoogleBooks(this.state.bookQuery)
-        .then(({data}) => this.setState({books: data}))
-        .catch(err => console.log(err));
+      this.searchGoogleBooks(this.state.bookQuery);
     }
   }
 
@@ -94,17 +124,17 @@ class App extends Component {
   }
 
   saveBook = (id) => {
-    const book = this.state.booksList.find(book => book.id === id);
+    const book = this.state.bookList.find(book => book.bookId === id);
 
     API.saveBook(book)
       .then(({data}) => {
         console.log(data);
       })
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }
+  
 
   deleteBook = (id) => {
-
     API.deleteBook(id)
       .then(({ data }) => {
         console.log(data);
@@ -130,7 +160,7 @@ class App extends Component {
                 <MenuIcon/>
               </IconButton>
               <Typography variant="h6" color="inherit" noWrap>
-                Responsive drawer
+                {this.state.activePageHeader}
               </Typography>
             </Toolbar>
           </AppBar>
@@ -150,7 +180,7 @@ class App extends Component {
                 ModalProps={{
                 keepMounted: true, 
               }}>
-                <SideNav/>
+                <SideNav activePage={this.state.activePage} handleInputChange={this.handleInputChange} bookQuery={this.state.bookQuery}/>
               </Drawer>
             </Hidden>
             <Hidden xsDown implementation="css">
@@ -160,17 +190,39 @@ class App extends Component {
               }}
                 variant="permanent"
                 open>
-                <SideNav/>
+      
+                <SideNav activePage={this.state.activePage} handleInputChange={this.handleInputChange} bookQuery={this.state.bookQuery} handleFormSubmit={this.handleFormSubmit}/>
               </Drawer>
             </Hidden>
           </nav>
           <main className={classes.content}>
             <div className={classes.toolbar}/>
             <Switch>
-              <Route exact path="/" render={() => <Search/>}/>
-              <Route exact path="/search" render={() => <Search/>}/>
-              <Route exact path="/saved" render={() => <Saved/>}/>
-              <Route render={() => <Search/>}/>
+              <Route 
+                exact 
+                path="/" 
+                render={() => <Search
+                  handlePageChange={this.handlePageChange}
+                  bookList={this.state.bookList}
+                  saveBook={this.saveBook} />}
+                />
+              <Route 
+                exact 
+                path="/search" 
+                render={() => <Search 
+                  handlePageChange={this.handlePageChange} 
+                  bookList={this.state.bookList} 
+                  saveBook={this.saveBook}/>}
+                />
+              <Route 
+                exact 
+                path="/saved" 
+                render={() => <Saved handlePageChange={this.handlePageChange}/>}
+              />
+              <Route render={() => <Search
+                handlePageChange={this.handlePageChange}
+                bookList={this.state.bookList}
+                saveBook={this.saveBook} />}/>
             </Switch>
           </main>
         </div>
