@@ -23,7 +23,7 @@ const styles = theme => ({
     flexWrap: 'wrap',
     flexDirection: 'column',
     height: '100%',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },  
   cover: {
     flex: '1 1 30%'
