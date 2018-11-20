@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import API from '../utils/API';
+import {Redirect} from 'react-router-dom';
+
 import { withStyles } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
@@ -42,6 +44,7 @@ class Saved extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     this.props.handlePageChange("Saved");
     this.getSavedBooks();
   }
@@ -54,7 +57,6 @@ class Saved extends Component {
 
   deleteBook = (bookId) => {
     const { _id: deleteId } = this.state.savedBooks.find(({_id}) => bookId === _id);
-
     API.deleteBook(deleteId)
       .then(() => this.getSavedBooks())
       .catch(err => console.log(err));
@@ -63,6 +65,7 @@ class Saved extends Component {
   render() {
     const { classes } = this.props;
     const {savedBooks: bookList} = this.state;
+    
     return (
       <div>
         <Grid container spacing={24} alignItems="stretch" alignContent="stretch">

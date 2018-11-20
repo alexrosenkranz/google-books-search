@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Search from './pages/Search';
 import Saved from './pages/Saved';
 import SideNav from './components/SideNav';
@@ -86,7 +86,7 @@ class App extends Component {
             image: book.volumeInfo.imageLinks.thumbnail
           }
         })
-        this.setState({ bookList })
+        this.setState({ bookList }, () => this.handlePageChange("Search"))
       })
       .catch(err => console.log(err));
   }
@@ -105,7 +105,6 @@ class App extends Component {
 
   handleFormSubmit = (event) => {
     event.preventDefault();
-
     if (this.state.bookQuery) {
       this.searchGoogleBooks(this.state.bookQuery);
     }
@@ -128,16 +127,6 @@ class App extends Component {
       })
       .catch(err => console.log(err));
   }
-  
-
-  deleteBook = (id) => {
-    API.deleteBook(id)
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch((err) => console.log(err));
-  }
-  
 
   render() {
     const {classes, theme} = this.props;
@@ -200,7 +189,9 @@ class App extends Component {
                 render={() => <Search
                   handlePageChange={this.handlePageChange}
                   bookList={this.state.bookList}
-                  saveBook={this.saveBook} />}
+                  saveBook={this.saveBook} 
+                  activePage={this.activePage}/>
+                }
                 />
               <Route 
                 exact 
@@ -208,17 +199,23 @@ class App extends Component {
                 render={() => <Search 
                   handlePageChange={this.handlePageChange} 
                   bookList={this.state.bookList} 
-                  saveBook={this.saveBook}/>}
+                  saveBook={this.saveBook}
+                  activePage={this.activePage}/>
+                }
                 />
               <Route 
                 exact 
                 path="/saved" 
-                render={() => <Saved handlePageChange={this.handlePageChange}/>}
+                render={() => <Saved 
+                  handlePageChange={this.handlePageChange} 
+                  activePage={this.activePage}/> }
               />
               <Route render={() => <Search
+                activePage={this.activePage}
                 handlePageChange={this.handlePageChange}
                 bookList={this.state.bookList}
-                saveBook={this.saveBook} />}/>
+                saveBook={this.saveBook} />}
+              />
             </Switch>
           </main>
         </div>

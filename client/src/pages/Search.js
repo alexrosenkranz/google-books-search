@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import {Redirect} from 'react-router-dom';
 
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
