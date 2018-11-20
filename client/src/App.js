@@ -72,10 +72,6 @@ class App extends Component {
     activePage: "Search"
   };
 
-  componentDidMount() {
-    this.searchGoogleBooks("Star Wars");
-  }
-
   searchGoogleBooks = (query) => {
     API.searchGoogleBooks(query)
       .then(({ data }) => {
@@ -84,7 +80,7 @@ class App extends Component {
           return {
             bookId: book.id,
             title: book.volumeInfo.title,
-            authors: book.volumeInfo.authors,
+            authors: book.volumeInfo.authors || "Alex Rosenkranz",
             description: book.volumeInfo.description,
             link: book.volumeInfo.infoLink,
             image: book.volumeInfo.imageLinks.thumbnail
