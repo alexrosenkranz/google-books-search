@@ -17,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import 'typeface-roboto';
 
-const drawerWidth = 350;
+const drawerWidth = 300;
 
 const styles = theme => ({
   root: {
