@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Search from './pages/Search';
-import Saved from './pages/Saved';
+import Search from './components/Search';
+import Saved from './components/Saved';
 import SideNav from './components/SideNav';
 
 import API from './utils/API';
