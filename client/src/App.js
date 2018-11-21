@@ -24,38 +24,27 @@ const styles = theme => ({
     display: 'flex'
   },
   drawer: {
-    [
-      theme
-        .breakpoints
-        .up('sm')
-    ]: {
+    [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
       flexShrink: 0
     }
   },
   appBar: {
     marginLeft: drawerWidth,
-    [
-      theme
-        .breakpoints
-        .up('sm')
-    ]: {
+    [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
     }
   },
   menuButton: {
     marginRight: 20,
-    [
-      theme
-        .breakpoints
-        .up('sm')
-    ]: {
+    [theme.breakpoints.up('sm')]: {
       display: 'none'
     }
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    background: "aquamarine"
   },
   content: {
     flexGrow: 1,
@@ -81,9 +70,9 @@ class App extends Component {
             bookId: book.id,
             title: book.volumeInfo.title,
             authors: book.volumeInfo.authors || "Alex Rosenkranz",
-            description: book.searchInfo.textSnippet,
+            description: (book.searchInfo) ? book.searchInfo.textSnippet : "No Description",
             link: book.volumeInfo.infoLink,
-            image: book.volumeInfo.imageLinks.thumbnail
+            image: (book.volumeInfo.imageLinks) ? book.volumeInfo.imageLinks.thumbnail : "https://via.placeholder.com/100x250"
           }
         })
         this.setState({ bookList }, () => this.handlePageChange("Search"))
@@ -97,9 +86,9 @@ class App extends Component {
   }
 
   handleDrawerToggle = () => {
-    this.setState(state => ({
-      mobileOpen: !state.mobileOpen
-    }));
+    this.setState({
+      mobileOpen: !this.state.mobileOpen
+    });
   };
   
 
@@ -138,7 +127,7 @@ class App extends Component {
           <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
               <IconButton
-                color="inherit"
+                color="secondary"
                 aria-label="Open drawer"
                 onClick={this.handleDrawerToggle}
                 className={classes.menuButton}>
@@ -165,7 +154,11 @@ class App extends Component {
                 ModalProps={{
                 keepMounted: true, 
               }}>
-                <SideNav activePage={this.state.activePage} handleInputChange={this.handleInputChange} bookQuery={this.state.bookQuery}/>
+                <SideNav 
+                  activePage={this.state.activePage} 
+                  handleInputChange={this.handleInputChange} 
+                  bookQuery={this.state.bookQuery}
+                  />
               </Drawer>
             </Hidden>
             <Hidden xsDown implementation="css">

@@ -82,10 +82,9 @@ const SideNav = (props) => {
             margin="normal"
             name="bookQuery"/>
           <Button
-            variant="outlined"
             component={Link}
             to="/"
-            color="primary"
+            color="secondary"
             className={classes.button}
             onClick={props.handleFormSubmit}
            >
