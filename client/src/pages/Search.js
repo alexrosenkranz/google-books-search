@@ -49,7 +49,7 @@ class Search extends PureComponent {
           {!bookList.length ? (<Typography variant='h4'>No Books Found!</Typography>) : (
             bookList.map(book => {
               return (
-                <Grid key={book.bookId} item xs={12} >
+                <Grid key={book.bookId} item xs={6} >
                   <Card className={classes.card} raised>
                     <div className={classes.details}>
 
@@ -58,10 +58,11 @@ class Search extends PureComponent {
                       <Typography variant='subtitle1' >By {book.authors.join(", ")}</Typography>
                       <Typography variant='body1'>{book.description}</Typography>
                       <CardActions className={classes.actions}>
-                        <Button href={book.link} size="small" color="primary">
+                        <Button href={book.link} target={"_blank"} size="small" color="primary">
                           View More Information
                       </Button>
-                        <Button size='small' color='secondary' onClick={() => saveBook(book.bookId)}>Save This Book</Button>
+                        <Button 
+                        size='small' color='secondary' onClick={() => saveBook(book.bookId)}>Save This Book</Button>
                       </CardActions>
                     </CardContent>
                     </div>

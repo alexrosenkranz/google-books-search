@@ -11,7 +11,6 @@ import BookIcon from '@material-ui/icons/Book';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import 'typeface-roboto';
 
 const styles = theme => ({
   container: {
@@ -31,6 +30,7 @@ const styles = theme => ({
     width: '100%'
   }
 });
+
 
 const SideNav = (props) => {
   const {classes} = props;
@@ -70,12 +70,9 @@ const SideNav = (props) => {
       </List>
       <Divider/>
       <div className={classes.container}>
-        {/* <Typography align="center" variant="h4">
-        Search For Books
-      </Typography> */}
         <form noValidate autoComplete="off" style={{
           width: '100%'
-        }}>
+        }} onSubmit={props.handleFormSubmit}>
           <TextField
             id="standard-name"
             label="Book Name"
@@ -86,9 +83,12 @@ const SideNav = (props) => {
             name="bookQuery"/>
           <Button
             variant="outlined"
+            component={Link}
+            to="/"
             color="primary"
             className={classes.button}
-            onClick={props.handleFormSubmit}>
+            onClick={props.handleFormSubmit}
+           >
             Search For Books
           </Button>
         </form>

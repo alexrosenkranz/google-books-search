@@ -81,7 +81,7 @@ class App extends Component {
             bookId: book.id,
             title: book.volumeInfo.title,
             authors: book.volumeInfo.authors || "Alex Rosenkranz",
-            description: book.volumeInfo.description,
+            description: book.searchInfo.textSnippet,
             link: book.volumeInfo.infoLink,
             image: book.volumeInfo.imageLinks.thumbnail
           }
