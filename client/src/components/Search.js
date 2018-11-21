@@ -49,7 +49,7 @@ class Search extends PureComponent {
           {!bookList.length ? (<Typography variant='h4'>No Books Found!</Typography>) : (
             bookList.map(book => {
               return (
-                <Grid key={book.bookId} item xs={6} >
+                <Grid key={book.bookId} style={{'display': 'grid'}} item xs={6} >
                   <Card className={classes.card} raised>
                     <div className={classes.details}>
 
